@@ -130,6 +130,7 @@
         type="checkbox"
         checked={currentIgnoreCase}
         onchange={(e) => ignoreCase.set((e.target as HTMLInputElement).checked)}
+        name="ignore-case"
       />
       Ignore case
     </label>
@@ -138,6 +139,7 @@
         type="checkbox"
         checked={currentShowLineNumbers}
         onchange={(e) => showLineNumbers.set((e.target as HTMLInputElement).checked)}
+        name="show-line-numbers"
       />
       Show line numbers
     </label>
@@ -146,6 +148,7 @@
         type="checkbox"
         checked={currentShowWordWrap}
         onchange={(e) => showWordWrap.set((e.target as HTMLInputElement).checked)}
+        name="wrap-long-lines"
       />
       Wrap long lines
     </label>

@@ -237,6 +237,7 @@ Example: 'llo$' matches lines ending with 'llo', '^hello' matches lines starting
         bind:value={searchTerm}
         class="search-input"
         bind:this={searchTermInput}
+        name="search-term"
       />
       {#if searchTerm.trim() || leftSearchHighlight || rightSearchHighlight || resultSearchHighlight}
         <button
@@ -275,6 +276,7 @@ Example: 'llo$' matches lines ending with 'llo', '^hello' matches lines starting
           bind:value={replacementText}
           class="command-input"
           bind:this={replacementInput}
+          name="replacement-text"
         />
         <CommandButton
           icon="🔄"

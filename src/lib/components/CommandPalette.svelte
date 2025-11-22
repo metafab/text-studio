@@ -313,6 +313,7 @@
         bind:value={searchQuery}
         bind:this={searchInput}
         aria-label="Search commands"
+        name="command-search"
       />
       <p class="palette-tip" role="note">
         Tip: Shift+Enter sends output to the Result pane. {altKeyLabel}+Enter sends it to the

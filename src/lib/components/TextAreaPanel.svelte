@@ -531,7 +531,13 @@
     </div>
   {/if}
 
-  <input bind:this={fileInput} type="file" style="display: none" onchange={handleFileSelect} />
+  <input
+    bind:this={fileInput}
+    type="file"
+    style="display: none"
+    onchange={handleFileSelect}
+    name="file-upload"
+  />
 
   <div bind:this={wrapMeasure} class="wrap-measure" aria-hidden="true"></div>
 </div>

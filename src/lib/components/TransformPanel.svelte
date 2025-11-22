@@ -462,6 +462,7 @@
         bind:value={joinSeparator}
         class="command-input"
         bind:this={joinSeparatorInput}
+        name="join-lines-separator"
       />
       <CommandButton
         icon="🔗"
@@ -482,6 +483,7 @@
         bind:value={splitSeparator}
         class="command-input"
         bind:this={splitSeparatorInput}
+        name="split-text-separator"
       />
       <CommandButton
         icon="✂️"
@@ -503,6 +505,7 @@
         min="1"
         class="command-input"
         bind:this={topLinesInput}
+        name="lines-count"
       />
       <SplitButton
         icon="🔝"
@@ -533,6 +536,7 @@
         bind:value={prefixSuffixText}
         class="command-input"
         bind:this={prefixSuffixInput}
+        name="prefix-suffix-text"
       />
       <SplitButton
         icon="⬅️"
@@ -562,6 +566,7 @@
         class="command-input"
         style="flex: 0 0 50px; max-width: 60px"
         bind:this={insertPositionInput}
+        name="insert-position"
       />
       <input
         type="text"
@@ -570,6 +575,7 @@
         bind:value={insertTextValue}
         class="command-input"
         style="flex: 1 1 auto; min-width: 80px"
+        name="insert-text"
       />
       <CommandButton
         icon="📍"
@@ -597,6 +603,7 @@ Position: 1-based (1 = before first char), negative = from end (-1 = before last
         class="command-input"
         style="flex: 0 0 50px; max-width: 60px"
         bind:this={substringStartInput}
+        name="substring-start"
       />
       <input
         type="number"
@@ -605,6 +612,7 @@ Position: 1-based (1 = before first char), negative = from end (-1 = before last
         bind:value={substringLength}
         class="command-input"
         style="flex: 1 1 auto; min-width: 80px"
+        name="substring-length"
       />
       <CommandButton
         icon="✂️"
@@ -633,6 +641,7 @@ Leave empty to extract from beginning of line"
         class="command-input"
         style="width: 80px"
         bind:this={extractStartInput}
+        name="extract-start-delimiter"
       />
       <input
         type="text"
@@ -642,6 +651,7 @@ Leave empty to extract to end of line"
         bind:value={extractEndDelimiter}
         class="command-input"
         style="width: 80px"
+        name="extract-end-delimiter"
       />
       <label
         class="checkbox-label"
@@ -655,6 +665,7 @@ Example with '<' and '>':
           type="checkbox"
           checked={extractStripDelimiters}
           onchange={(e) => (extractStripDelimiters = (e.target as HTMLInputElement).checked)}
+          name="extract-strip-delimiters"
         />
         <span style="font-size: 12px; white-space: nowrap">Strip</span>
       </label>
