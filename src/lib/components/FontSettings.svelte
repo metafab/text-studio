@@ -82,61 +82,55 @@
 
 <svelte:window onclick={handleClickOutside} />
 
-<div class="font-settings">
-  <button
-    bind:this={button}
-    onclick={toggleDropdown}
-    class="gear-button"
-    title="Font Settings"
-    type="button"
-  >
-    ⚙️
-  </button>
+<button
+  bind:this={button}
+  onclick={toggleDropdown}
+  class="gear-button"
+  title="Font Settings"
+  type="button"
+>
+  ⚙️
+</button>
 
-  {#if isOpen}
-    <div bind:this={dropdown} class="dropdown">
-      <div class="dropdown-content">
-        <div class="setting-group">
-          <label for="font-family">Font Family:</label>
-          <select
-            id="font-family"
-            value={currentFontFamily}
-            onchange={(e) => updateFontFamily((e.target as HTMLSelectElement).value)}
-          >
-            {#each fontFamilies as font}
-              <option value={font.value}>{font.label}</option>
-            {/each}
-          </select>
-        </div>
+{#if isOpen}
+  <div bind:this={dropdown} class="dropdown">
+    <div class="dropdown-content">
+      <div class="setting-group">
+        <label for="font-family">Font Family:</label>
+        <select
+          id="font-family"
+          value={currentFontFamily}
+          onchange={(e) => updateFontFamily((e.target as HTMLSelectElement).value)}
+        >
+          {#each fontFamilies as font}
+            <option value={font.value}>{font.label}</option>
+          {/each}
+        </select>
+      </div>
 
-        <div class="setting-group">
-          <label for="font-size">Font Size:</label>
-          <select
-            id="font-size"
-            value={currentFontSize}
-            onchange={(e) => updateFontSize((e.target as HTMLSelectElement).value)}
-          >
-            {#each fontSizes as size}
-              <option value={parseInt(size.value)}>{size.label}</option>
-            {/each}
-          </select>
-        </div>
+      <div class="setting-group">
+        <label for="font-size">Font Size:</label>
+        <select
+          id="font-size"
+          value={currentFontSize}
+          onchange={(e) => updateFontSize((e.target as HTMLSelectElement).value)}
+        >
+          {#each fontSizes as size}
+            <option value={parseInt(size.value)}>{size.label}</option>
+          {/each}
+        </select>
       </div>
     </div>
-  {/if}
-</div>
+  </div>
+{/if}
 
 <style>
-  .font-settings {
-    position: relative;
-  }
-
   .gear-button {
     background: none;
     border: none;
     font-size: 18px;
     cursor: pointer;
-    padding: 4px;
+    padding: 4px 8px;
     border-radius: 4px;
     transition: background-color 0.2s;
   }

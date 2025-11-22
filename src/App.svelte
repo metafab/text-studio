@@ -1030,7 +1030,8 @@
         <h1 class="app-title">Text Processing Studio</h1>
         <p class="app-description">Text comparison, transformation, filtering, sorting, and more</p>
         <p class="privacy-notice">
-          🔒 Everything is done in your browser. No content is sent to a server.
+          🔒 Everything is done in your browser. No content is sent to a server. Open source
+          project.
         </p>
         <p class="shortcut-hint">Press {commandPaletteShortcut} to open the command palette.</p>
       </div>
@@ -1043,6 +1044,20 @@
           {commandPanelVisible ? '▶' : '◀'}
         </button>
         <HelpButton />
+        <a
+          class="github-link"
+          href="https://github.com/metafab/text-studio"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open GitHub repository"
+          title="View GitHub repository"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 .296C5.373.296 0 5.67 0 12.296c0 5.292 3.438 9.787 8.207 11.385.6.111.793-.261.793-.58 0-.287-.011-1.244-.017-2.258-3.338.726-4.042-1.61-4.042-1.61-.546-1.388-1.333-1.758-1.333-1.758-1.089-.745.083-.73.083-.73 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.761-1.605-2.665-.303-5.466-1.333-5.466-5.932 0-1.31.468-2.381 1.236-3.221-.124-.303-.536-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.5 11.5 0 0 1 3.003-.404c1.019.005 2.045.138 3.003.404 2.291-1.552 3.297-1.23 3.297-1.23.655 1.652.243 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.61-2.804 5.625-5.476 5.921.43.371.814 1.102.814 2.222 0 1.604-.015 2.896-.015 3.286 0 .321.19.697.8.578C20.565 22.079 24 17.585 24 12.296 24 5.67 18.627.296 12 .296Z"
+            />
+          </svg>
+        </a>
         <FontSettings />
         <ThemeToggle />
       </div>
@@ -1220,6 +1235,30 @@
 
   .toggle-command-btn:hover {
     background: var(--hover-bg);
+  }
+
+  .github-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--surface-color);
+    color: var(--text-primary);
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .github-link:hover {
+    background: var(--hover-bg);
+  }
+
+  .github-link svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
   }
 
   .app-title {

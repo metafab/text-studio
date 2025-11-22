@@ -22,7 +22,7 @@
 
 <style>
   .theme-toggle {
-    padding: 8px 12px;
+    padding: 4px 8px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
     background: var(--surface-color);

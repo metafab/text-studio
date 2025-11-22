@@ -144,7 +144,11 @@ For technical details and architecture decisions, see [TECH.md](./docs/TECH.md).
 
 ## 🤝 Contributing
 
-Consult [UX improvement ideas](./docs/UX_IMPROVEMENTS.md) and [suggestions for new commands](./docs/COMMAND_IDEAS.md).
+You can consult [UX improvement ideas](./docs/UX_IMPROVEMENTS.md) and [suggestions for new commands](./docs/COMMAND_IDEAS.md).
+
+You can [submit a new idea](https://github.com/metafab/text-studio/issues/new).
+
+And of course, you can develop an existing or a new idea 😀:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -160,6 +164,7 @@ This project is open source. See the [LICENSE](./LICENSE) file for details.
 
 ## 🔗 Links
 
+- [GitHub Repository](https://github.com/metafab/text-studio) - Source code and issue tracker
 - [Technical Documentation](./docs/TECH.md) - Architecture and implementation details
 - [Testing Guide](./docs/TESTING.md) - Test coverage and testing approach
 - [Svelte Documentation](https://svelte.dev/docs) - Learn about Svelte
