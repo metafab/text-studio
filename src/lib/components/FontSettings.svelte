@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { autoPlacement, computePosition, offset, shift } from '@floating-ui/dom'
+  import { autoUpdate, computePosition, offset, shift } from '@floating-ui/dom'
+  import { tick } from 'svelte'
   import { fontFamily, fontSize } from '../stores'
 
   let isOpen = $state(false)
@@ -43,21 +44,38 @@
 
   function toggleDropdown() {
     isOpen = !isOpen
-    if (isOpen && button && dropdown) {
-      setTimeout(updatePosition, 0)
-    }
   }
 
   async function updatePosition() {
     if (!button || !dropdown) return
 
-    const { x, y } = await computePosition(button, dropdown, {
-      middleware: [offset(8), autoPlacement(), shift({ padding: 16 })],
+    await tick()
+
+    const { x, y, strategy } = await computePosition(button, dropdown, {
+      placement: 'bottom-end',
+      strategy: 'fixed',
+      middleware: [offset(8), shift({ padding: 16, crossAxis: true, mainAxis: false })],
     })
 
+    dropdown.style.position = strategy
     dropdown.style.left = `${x}px`
     dropdown.style.top = `${y}px`
   }
+
+  let cleanupAutoUpdate: (() => void) | undefined
+
+  $effect(() => {
+    if (isOpen && button && dropdown) {
+      cleanupAutoUpdate?.()
+      cleanupAutoUpdate = autoUpdate(button, dropdown, () => {
+        void updatePosition()
+      })
+      void updatePosition()
+    } else if (cleanupAutoUpdate) {
+      cleanupAutoUpdate()
+      cleanupAutoUpdate = undefined
+    }
+  })
 
   function handleClickOutside(event: MouseEvent) {
     if (
