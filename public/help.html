@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/text-studio-icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help & Documentation - Text Processing Studio</title>
+    <style>
+      :root {
+        font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        font-weight: 400;
+
+        /* Light theme variables */
+        --primary-color: #3b82f6;
+        --primary-hover: #2563eb;
+        --surface-color: #ffffff;
+        --hover-bg: #f1f5f9;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border-color: #e2e8f0;
+        --code-bg: #f1f5f9;
+        --code-color: #dc2626;
+
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --surface-color: #1e293b;
+          --hover-bg: #334155;
+          --text-primary: #f1f5f9;
+          --text-secondary: #94a3b8;
+          --border-color: #475569;
+          --code-bg: #334155;
+          --code-color: #fca5a5;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background-color: #f1f5f9;
+        color: var(--text-primary);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #0f172a;
+        }
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 260px;
+        background: var(--surface-color);
+        border-right: 1px solid var(--border-color);
+        padding: 24px 0;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow-y: auto;
+      }
+
+      .sidebar-header {
+        padding: 0 24px 24px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 16px;
+      }
+
+      .sidebar-title {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .nav-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-item {
+        display: block;
+        width: 100%;
+        padding: 12px 24px;
+        text-align: left;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        border-left: 3px solid transparent;
+        text-decoration: none;
+      }
+
+      .nav-item:hover {
+        background: var(--hover-bg);
+        color: var(--text-primary);
+      }
+
+      .nav-item.active {
+        background: var(--hover-bg);
+        color: var(--primary-color);
+        border-left-color: var(--primary-color);
+        font-weight: 600;
+      }
+
+      .content {
+        flex: 1;
+        padding: 48px 64px;
+        background: var(--surface-color);
+      }
+
+      .section {
+        display: none;
+        max-width: 900px;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 0 24px 0;
+        color: var(--text-primary);
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 16px;
+      }
+
+      h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin: 40px 0 20px 0;
+        color: var(--text-primary);
+      }
+
+      h3 {
+        font-size: 1.35rem;
+        font-weight: 600;
+        margin: 32px 0 16px 0;
+        color: var(--text-primary);
+      }
+
+      p {
+        margin: 16px 0;
+        line-height: 1.7;
+        color: var(--text-secondary);
+      }
+
+      code {
+        background: var(--code-bg);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        font-size: 0.9em;
+        color: var(--code-color);
+      }
+
+      pre {
+        background: var(--code-bg);
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 20px 0;
+        border: 1px solid var(--border-color);
+      }
+
+      pre code {
+        background: transparent;
+        padding: 0;
+        color: var(--text-primary);
+      }
+
+      ul {
+        margin: 16px 0;
+        padding-left: 28px;
+      }
+
+      li {
+        margin: 10px 0;
+        line-height: 1.7;
+        color: var(--text-secondary);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+      }
+
+      td, th {
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        text-align: left;
+      }
+
+      th {
+        background: var(--hover-bg);
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      td {
+        color: var(--text-secondary);
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid var(--border-color);
+        margin: 32px 0;
+      }
+
+      strong {
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--surface-color);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-secondary);
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: static;
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .content {
+          padding: 32px 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="sidebar-title">Help & Documentation</h2>
+        </div>
+        <nav>
+          <ul class="nav-list">
+            <li>
+              <a href="#overview" class="nav-item active" onclick="showSection('overview', event)"
+              >Overview</a>
+            </li>
+            <li>
+              <a href="#search-modes" class="nav-item" onclick="showSection('search-modes', event)"
+              >Search Modes</a>
+            </li>
+            <li>
+              <a href="#substring" class="nav-item" onclick="showSection('substring', event)"
+              >Substring Extraction</a>
+            </li>
+            <li>
+              <a href="#usage" class="nav-item" onclick="showSection('usage', event)">How to Use</a>
+            </li>
+            <li>
+              <a href="#testing" class="nav-item" onclick="showSection('testing', event)"
+              >Testing</a>
+            </li>
+            <li>
+              <a href="#technology" class="nav-item" onclick="showSection('technology', event)"
+              >Technology</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <div id="overview" class="section active">
+          <h1>Text Processing Studio</h1>
+          <p>
+            A comprehensive text processing web application. Process, compare, transform, and
+            analyze text with an intuitive interface and powerful features.
+          </p>
+
+          <h2>🚀 Key Features</h2>
+
+          <h3>Text Processing Operations</h3>
+          <ul>
+            <li>
+              <strong>Text Statistics</strong> - Lines, characters, unique lines with case
+              sensitivity options
+            </li>
+            <li><strong>Sorting</strong> - Ascending, descending, or random line sorting</li>
+            <li>
+              <strong>Deduplication</strong> - Remove duplicate lines with
+              case-sensitive/insensitive options
+            </li>
+            <li><strong>Text Transformation</strong> - Uppercase, lowercase, trim whitespace</li>
+            <li>
+              <strong>Line Operations</strong> - Reverse lines, remove empty lines, keep top/bottom
+              N lines
+            </li>
+            <li>
+              <strong>Text Trimming</strong> - Remove whitespace from start, end, or both sides of
+              lines
+            </li>
+            <li>
+              <strong>Line Filtering</strong> - Keep or remove lines based on search patterns with
+              three search modes
+            </li>
+            <li>
+              <strong>Text Splitting/Joining</strong> - Split text by custom separators or join
+              lines with separators
+            </li>
+            <li><strong>Prefix/Suffix</strong> - Add text to the beginning or end of each line</li>
+            <li>
+              <strong>Substring Extraction</strong> - Extract specific character ranges from each
+              line
+            </li>
+            <li>
+              <strong>Text Insertion</strong> - Insert text at specific positions within each line
+            </li>
+            <li>
+              <strong>Extract Between Delimiters</strong> - Extract text between two delimiters
+            </li>
+          </ul>
+
+          <h3>Text Comparison & Analysis</h3>
+          <ul>
+            <li><strong>Side-by-Side Comparison</strong> - Compare two texts in parallel panels</li>
+            <li><strong>Common Lines</strong> - Extract lines that exist in both texts</li>
+            <li>
+              <strong>Unique Lines</strong> - Find lines unique to left text, right text, or both
+            </li>
+            <li>
+              <strong>Visual Highlighting</strong> - Highlight common or different lines with color
+              coding
+            </li>
+            <li>
+              <strong>Search & Highlight</strong> - Three search modes: Standard, LIKE Pattern, and
+              Regex
+            </li>
+            <li>
+              <strong>Flexible Filtering</strong> - Keep or remove lines based on search patterns
+            </li>
+            <li>
+              <strong>Advanced Replace</strong> - Replace text with support for regex capture groups
+            </li>
+          </ul>
+
+          <h3>User Experience</h3>
+          <ul>
+            <li>
+              <strong>Three-Panel Interface</strong> - Left, Right, and Result panels with resizable
+              layout
+            </li>
+            <li>
+              <strong>Output Destination Control</strong> - Choose whether commands output to active
+              panel or result panel
+            </li>
+            <li>
+              <strong>Command Palette</strong> - Open with Cmd/Ctrl+K to search commands, reuse
+              recent actions, and route results with Shift or Alt/Option modifiers
+            </li>
+            <li><strong>Drag & Drop</strong> - Drop text files directly into panels</li>
+            <li><strong>File Operations</strong> - Import, export, copy to clipboard</li>
+            <li><strong>Undo/Redo</strong> - Full history tracking for all panels (Cmd/Ctrl+Z)</li>
+            <li><strong>Theme Support</strong> - Light and dark themes</li>
+            <li><strong>Responsive Design</strong> - Works on desktop and mobile devices</li>
+            <li>
+              <strong>Privacy-First</strong> - All processing happens in your browser, no data sent
+              to servers
+            </li>
+          </ul>
+
+          <h2>🔒 Privacy & Security</h2>
+          <ul>
+            <li><strong>Client-Side Processing</strong> - All operations happen in your browser</li>
+            <li><strong>No Data Transfer</strong> - No text content is sent to external servers</li>
+            <li><strong>Local Storage</strong> - Settings stored locally in browser</li>
+            <li><strong>File Handling</strong> - Files processed entirely in browser memory</li>
+          </ul>
+        </div>
+
+        <div id="search-modes" class="section">
+          <h1>Search Modes</h1>
+          <p>The application supports three search modes for flexible text matching:</p>
+
+          <h2>Standard Mode (Default)</h2>
+          <p><strong>Use case:</strong> Simple exact text matching</p>
+
+          <h3>Features:</h3>
+          <ul>
+            <li>Exact text matching with literal string search</li>
+            <li>All special characters are treated literally (no escaping needed)</li>
+            <li>Fast and straightforward</li>
+          </ul>
+
+          <h3>Example:</h3>
+          <pre><code>Text: "hello world, hello universe"
+Search: "hello"
+Result: Matches "hello" exactly (2 matches)</code></pre>
+
+          <hr>
+
+          <h2>LIKE Pattern Mode</h2>
+          <p><strong>Use case:</strong> Flexible pattern matching with wildcards</p>
+
+          <h3>Wildcards:</h3>
+          <ul>
+            <li><code>%</code> = matches any sequence of non-whitespace characters</li>
+            <li><code>_</code> = matches exactly one character</li>
+          </ul>
+
+          <h3>Examples:</h3>
+
+          <p><strong>Prefix Match:</strong></p>
+          <pre><code>Text: "hello, hello123, helloworld"
+Pattern: "hello%"
+Matches: "hello", "hello123", "helloworld"</code></pre>
+
+          <p><strong>Suffix Match:</strong></p>
+          <pre><code>Text: "myfile.txt, yourfile.txt, readme.md"
+Pattern: "%.txt"
+Matches: "myfile.txt", "yourfile.txt"</code></pre>
+
+          <p><strong>Single Character Wildcard:</strong></p>
+          <pre><code>Text: "cat, cot, cut, cart"
+Pattern: "c_t"
+Matches: "cat", "cot", "cut" (but not "cart")</code></pre>
+
+          <hr>
+
+          <h2>Regex Mode</h2>
+          <p><strong>Use case:</strong> Advanced pattern matching with full regex power</p>
+
+          <h3>Features:</h3>
+          <ul>
+            <li>Full JavaScript regular expression support</li>
+            <li>
+              <strong>Multiline mode enabled</strong> (<code>^</code> and <code>$</code> match at
+              line boundaries)
+            </li>
+            <li>Supports capture groups for advanced replacements</li>
+            <li>
+              Test your patterns at <a href="https://regex101.com/" target="_blank">Regex101</a>
+              (select "JavaScript" flavor)
+            </li>
+          </ul>
+
+          <h3>Examples:</h3>
+
+          <p><strong>Line-End Anchor:</strong></p>
+          <pre><code>Text: "hello\nworld\nbello"
+Pattern: "llo$"
+Matches: Lines ending with "llo": "hello", "bello"</code></pre>
+
+          <p><strong>Character Classes:</strong></p>
+          <pre><code>Text: "test123, hello456"
+Pattern: "[0-9]+"
+Matches: "123", "456"</code></pre>
+
+          <p><strong>Capture Groups for Replacement:</strong></p>
+          <pre><code>Text: "John Smith, Jane Doe"
+Pattern: "(\\w+) (\\w+)"
+Replacement: "$2, $1"
+Result: "Smith, John, Doe, Jane"</code></pre>
+
+          <hr>
+
+          <h2>Comparison Table</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Standard</th>
+                <th>LIKE</th>
+                <th>Regex</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Exact text matching</td>
+                <td>✅</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td>Wildcard patterns</td>
+                <td>❌</td>
+                <td>✅</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td>Special char escaping</td>
+                <td>Auto</td>
+                <td>% and _ only</td>
+                <td>Manual</td>
+              </tr>
+              <tr>
+                <td>Capture groups</td>
+                <td>❌</td>
+                <td>❌</td>
+                <td>✅</td>
+              </tr>
+              <tr>
+                <td>Learning curve</td>
+                <td>Easy</td>
+                <td>Medium</td>
+                <td>Hard</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="substring" class="section">
+          <h1>Substring Extraction</h1>
+          <p>The Substring command replaces each line with a substring based on:</p>
+          <ul>
+            <li><strong>Start index:</strong> 1-based position (1 = first character)</li>
+            <li><strong>Length:</strong> Optional number of characters to keep</li>
+          </ul>
+
+          <h2>Positive Start Index</h2>
+
+          <h3>Extract from position 3 (no length)</h3>
+          <p><strong>Input:</strong></p>
+          <pre><code>hello world
+apple banana
+test string</code></pre>
+          <p><strong>Command:</strong> Start=3, Length=(empty)</p>
+          <p><strong>Output:</strong></p>
+          <pre><code>llo world
+ple banana
+st string</code></pre>
+
+          <h3>Extract from position 1 with length 5</h3>
+          <p><strong>Input:</strong></p>
+          <pre><code>hello world
+apple banana
+test string</code></pre>
+          <p><strong>Command:</strong> Start=1, Length=5</p>
+          <p><strong>Output:</strong></p>
+          <pre><code>hello
+apple
+test </code></pre>
+
+          <hr>
+
+          <h2>Negative Start Index</h2>
+          <p>Negative indices count from the end of each line:</p>
+          <ul>
+            <li><code>-1</code> = last character</li>
+            <li><code>-2</code> = second-to-last character</li>
+          </ul>
+
+          <h3>Extract last 5 characters</h3>
+          <p><strong>Input:</strong></p>
+          <pre><code>hello world
+apple banana
+test string</code></pre>
+          <p><strong>Command:</strong> Start=-5, Length=(empty)</p>
+          <p><strong>Output:</strong></p>
+          <pre><code>world
+anana
+tring</code></pre>
+
+          <hr>
+
+          <h2>Use Cases</h2>
+          <ol>
+            <li>Extract file extensions: Start from last dot position</li>
+            <li>Remove prefixes: Start=N where N is after the prefix</li>
+            <li>Get first N characters: Start=1, Length=N</li>
+            <li>Get last N characters: Start=-N</li>
+            <li>Extract middle portion: Start=N, Length=M</li>
+          </ol>
+        </div>
+
+        <div id="usage" class="section">
+          <h1>How to Use</h1>
+
+          <h2>Basic Text Processing</h2>
+
+          <h3>1. Load Text</h3>
+          <ul>
+            <li><strong>Paste text</strong> directly into the Left panel</li>
+            <li><strong>Drag & drop a file</strong> into any panel</li>
+            <li><strong>Import from file</strong> using the file import button</li>
+          </ul>
+
+          <h3>2. Select Operation</h3>
+          <p>Choose from various operations in the Command Panel:</p>
+          <ul>
+            <li>Text statistics and analysis</li>
+            <li>Sorting and deduplication</li>
+            <li>Case conversion and trimming</li>
+            <li>Line filtering and manipulation</li>
+            <li>Text transformation</li>
+          </ul>
+
+          <h3>3. View Results</h3>
+          <ul>
+            <li>
+              Processed text appears in the <strong>active panel</strong> or <strong>Result
+                panel</strong>
+            </li>
+            <li>Use <strong>Shift+Click</strong> on command buttons to output to Result panel</li>
+            <li>Use <strong>Alt+Click</strong> or <strong>Option+Click</strong> to output to the active panel</li>
+          </ul>
+
+          <h2>Command Palette</h2>
+          <p>
+            Quickly reach any operation by pressing <strong>Cmd+K</strong> (macOS) or
+            <strong>Ctrl+K</strong> (Windows/Linux) to open the command palette. Start typing to
+            filter by command name, description, or category. Use the arrow keys or Tab/Shift+Tab to
+            move through the results, then press <strong>Enter</strong> to run the highlighted
+            command. The palette keeps your recently used commands at the top so repeated actions
+            are only a few keystrokes away.
+          </p>
+          <ul>
+            <li><strong>Shift+Enter</strong> sends the command output to the Result pane</li>
+            <li><strong>Alt+Enter</strong> or <strong>Option+Enter</strong> routes the output to the opposite pane</li>
+            <li>Close the palette any time with <strong>Esc</strong> or by clicking the backdrop</li>
+          </ul>
+
+          <hr>
+
+          <h2>Text Comparison</h2>
+
+          <h3>1. Load Texts</h3>
+          <p>Add content to both <strong>Left (A)</strong> and <strong>Right (B)</strong> panels</p>
+
+          <h3>2. Compare</h3>
+          <p>Use comparison commands:</p>
+          <ul>
+            <li><strong>Extract Common</strong> - Lines that exist in both texts</li>
+            <li><strong>Left Only</strong> - Lines unique to left text</li>
+            <li><strong>Right Only</strong> - Lines unique to right text</li>
+            <li><strong>Unique Lines</strong> - Combined unique lines from both</li>
+          </ul>
+
+          <h3>3. Highlight</h3>
+          <p>Visualize differences:</p>
+          <ul>
+            <li><strong>Highlight Common</strong> - Color code matching lines</li>
+            <li><strong>Highlight Different</strong> - Show non-matching lines</li>
+          </ul>
+
+          <hr>
+
+          <h2>Keyboard Shortcuts</h2>
+
+          <h3>Undo/Redo</h3>
+          <ul>
+            <li>
+              <strong>Cmd+Z</strong> (Mac) or <strong>Ctrl+Z</strong> (Windows/Linux) - Undo last
+              change
+            </li>
+            <li>
+              <strong>Cmd+Shift+Z</strong> (Mac) or <strong>Ctrl+Y</strong> (Windows/Linux) - Redo
+            </li>
+          </ul>
+
+          <h3>Output Destination</h3>
+          <ul>
+            <li><strong>Shift+Click</strong> on command button - Output to Result panel</li>
+            <li><strong>Alt+Click</strong> or <strong>Option+Click</strong> on command button - Output to active panel</li>
+            <li><strong>Normal Click</strong> - Use default output setting</li>
+          </ul>
+
+          <h3>Command Palette</h3>
+          <ul>
+            <li>
+              <strong>Cmd+K</strong> (Mac) or <strong>Ctrl+K</strong> (Windows/Linux) - Open or close
+              the palette
+            </li>
+            <li><strong>Arrow Keys / Tab</strong> - Navigate between command results</li>
+            <li><strong>Enter</strong> - Run selected command (combine with Shift or Alt/Option for output routing)</li>
+          </ul>
+        </div>
+
+        <div id="testing" class="section">
+          <h1>Testing</h1>
+          <p>
+            This project uses <a href="https://vitest.dev/" target="_blank">Vitest</a> for
+            comprehensive unit testing.
+          </p>
+
+          <h2>Test Coverage</h2>
+          <p>The test suite includes thorough unit tests for:</p>
+
+          <h3>Text Processing Functions</h3>
+          <p>All text processing operations are tested:</p>
+          <ul>
+            <li><strong>getTextStats</strong> - Text statistics calculation</li>
+            <li><strong>sortLines</strong> - Line sorting with options</li>
+            <li><strong>reverseLines</strong> - Reverse line order</li>
+            <li><strong>removeDuplicates</strong> - Duplicate removal with case sensitivity</li>
+            <li><strong>searchAndHighlight</strong> - Search and highlight with all modes</li>
+            <li><strong>filterLines</strong> - Filter lines by search term</li>
+            <li><strong>getCommonLines</strong> - Find common lines</li>
+            <li><strong>trimLines</strong> - Trim whitespace</li>
+            <li><strong>removeEmptyLines</strong> - Remove empty/blank lines</li>
+          </ul>
+
+          <h3>Undo/Redo Functionality</h3>
+          <p>Complete testing of history management:</p>
+          <ul>
+            <li><strong>createInitialHistory</strong> - Initial state creation</li>
+            <li><strong>canUndo/canRedo</strong> - History state validation</li>
+            <li><strong>addToHistory</strong> - Adding new states</li>
+            <li><strong>undo/redo</strong> - Undo/redo operations</li>
+          </ul>
+
+          <h2>Running Tests</h2>
+          <pre><code># Run tests once
+pnpm test:run
+
+# Run tests in watch mode
+pnpm test
+
+# Run tests with UI interface
+pnpm test:ui</code></pre>
+
+          <p>All 158 tests pass with comprehensive coverage of features.</p>
+        </div>
+
+        <div id="technology" class="section">
+          <h1>Technology Stack</h1>
+
+          <h2>Frontend Framework</h2>
+          <p><strong>Svelte 5 with TypeScript</strong></p>
+          <ul>
+            <li>Reactive programming with Svelte's runes syntax</li>
+            <li>Type-safe development with TypeScript</li>
+            <li>Component-based architecture</li>
+            <li>Fast and efficient updates</li>
+          </ul>
+
+          <h2>Build Tool</h2>
+          <p><strong>Vite</strong></p>
+          <ul>
+            <li>Lightning-fast development server</li>
+            <li>Hot Module Replacement (HMR)</li>
+            <li>Optimized production builds</li>
+            <li>Modern ES modules</li>
+          </ul>
+
+          <h2>Testing Framework</h2>
+          <p><strong>Vitest with jsdom</strong></p>
+          <ul>
+            <li>Unit testing for all functions</li>
+            <li>Fast test execution</li>
+            <li>Compatible with Vite</li>
+            <li>Browser environment simulation</li>
+          </ul>
+
+          <h2>Key Dependencies</h2>
+          <ul>
+            <li><strong>@floating-ui/dom</strong> - Tooltip positioning</li>
+            <li><strong>file-saver</strong> - File download functionality</li>
+          </ul>
+
+          <h2>Architecture Decisions</h2>
+
+          <h3>Client-Side Processing</h3>
+          <p>All text processing happens in the browser:</p>
+          <ul>
+            <li>No server required</li>
+            <li>Complete privacy - no data sent anywhere</li>
+            <li>Works offline after initial load</li>
+            <li>Fast processing with no network latency</li>
+          </ul>
+
+          <h3>State Management</h3>
+          <ul>
+            <li>Svelte stores for global state (theme, settings)</li>
+            <li>Component-level state with Svelte runes</li>
+            <li>Undo/redo history per panel</li>
+            <li>Reactive updates throughout</li>
+          </ul>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function showSection(sectionId, event) {
+        if (event) {
+          event.preventDefault()
+        }
+
+        // Hide all sections
+        document.querySelectorAll('.section').forEach(section => {
+          section.classList.remove('active')
+        })
+
+        // Show selected section
+        const section = document.getElementById(sectionId)
+        if (section) {
+          section.classList.add('active')
+          // Scroll to top of content
+          window.scrollTo(0, 0)
+        }
+
+        // Update active nav item
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.remove('active')
+        })
+        const activeLink = document.querySelector(`a[href="#${sectionId}"]`)
+        if (activeLink) {
+          activeLink.classList.add('active')
+        }
+
+        // Update URL hash
+        history.pushState(null, '', `#${sectionId}`)
+      }
+
+      // Handle initial load with hash
+      window.addEventListener('DOMContentLoaded', () => {
+        const hash = window.location.hash.slice(1)
+        if (hash) {
+          showSection(hash)
+        }
+      })
+
+      // Handle browser back/forward
+      window.addEventListener('popstate', () => {
+        const hash = window.location.hash.slice(1) || 'overview'
+        showSection(hash)
+      })
+    </script>
+  </body>
+</html>
