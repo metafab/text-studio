@@ -554,6 +554,7 @@
     transition:
       border-color 0.2s,
       box-shadow 0.2s;
+    box-sizing: border-box;
   }
 
   .textarea-panel.active {
@@ -642,8 +643,8 @@
 
   .textarea-container {
     position: relative;
-    flex: 1;
-    min-height: 200px;
+    flex: 1 1 auto;
+    min-height: 0;
     --gutter-width: 0px;
   }
 
@@ -653,6 +654,8 @@
   }
 
   textarea {
+    flex: 1 1 auto;
+    min-height: 0;
     width: 100%;
     height: 100%;
     padding: 16px;

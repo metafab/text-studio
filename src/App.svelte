@@ -1340,6 +1340,7 @@
   .textarea-wrapper {
     position: absolute;
     border: 1px solid var(--border-color);
+    box-sizing: border-box;
   }
 
   .panel-a {
