@@ -47,7 +47,7 @@ export function canRedo(history: HistoryState): boolean {
 export function addToHistory(
   history: HistoryState,
   newValue: string,
-  options: HistoryUpdateOptions = {}
+  options: HistoryUpdateOptions = {},
 ): HistoryState {
   if (newValue === history.present.value) {
     return history
