@@ -36,8 +36,8 @@
     paneId,
     value = $bindable(''),
     placeholder = '',
-    searchHighlight = '',
-    extractHighlight = '',
+    searchHighlight = $bindable(''),
+    extractHighlight = $bindable(''),
     isActive = false,
     onActivate,
     onMaximize,
@@ -90,6 +90,18 @@
   let isPanelEmpty = $derived(!value.trim())
   let examplesMenuId = $derived(`examples-menu-${paneId}`)
   let shouldShowQuickActions = $derived(paneId !== 'result')
+
+  // Track previous value to detect changes
+  let previousValue = $state(value)
+
+  // Clear highlights when text content changes
+  $effect(() => {
+    if (value !== previousValue) {
+      searchHighlight = ''
+      extractHighlight = ''
+      previousValue = value
+    }
+  })
 
   function syncScroll() {
     if (textarea) {
@@ -183,6 +195,8 @@
 
   function clearContent() {
     value = ''
+    searchHighlight = ''
+    extractHighlight = ''
   }
 
   function handleFocus() {

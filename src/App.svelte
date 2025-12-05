@@ -1086,8 +1086,8 @@
             paneId="a"
             bind:value={leftText}
             placeholder="Enter or paste text here, or drag & drop a file..."
-            searchHighlight={leftSearchHighlight}
-            extractHighlight={leftExtractHighlight}
+            bind:searchHighlight={leftSearchHighlight}
+            bind:extractHighlight={leftExtractHighlight}
             isActive={activePaneId === 'a'}
             onActivate={() => (activePaneId = 'a')}
             onMaximize={() => toggleMaximize('a')}
@@ -1105,8 +1105,8 @@
             paneId="b"
             bind:value={rightText}
             placeholder="Enter or paste text here, or drag & drop a file..."
-            searchHighlight={rightSearchHighlight}
-            extractHighlight={rightExtractHighlight}
+            bind:searchHighlight={rightSearchHighlight}
+            bind:extractHighlight={rightExtractHighlight}
             isActive={activePaneId === 'b'}
             onActivate={() => (activePaneId = 'b')}
             onMaximize={() => toggleMaximize('b')}
@@ -1123,8 +1123,8 @@
             paneId="result"
             bind:value={resultText}
             placeholder="Results will appear here..."
-            searchHighlight={resultSearchHighlight}
-            extractHighlight={resultExtractHighlight}
+            bind:searchHighlight={resultSearchHighlight}
+            bind:extractHighlight={resultExtractHighlight}
             isActive={activePaneId === 'result'}
             onActivate={() => (activePaneId = 'result')}
             onMaximize={() => toggleMaximize('result')}
