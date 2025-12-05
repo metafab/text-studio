@@ -1,6 +1,9 @@
 # Text Processing Studio
 
-A comprehensive text processing web application built with Svelte, TypeScript, and Vite. Process, compare, transform, and analyze text with an intuitive interface and powerful features.
+A comprehensive text processing web application built with Svelte, TypeScript, and Vite.<br>
+Process, compare, transform, and analyze text with an intuitive interface and powerful features.
+
+👉 **Use it now at [text-studio.metasapiens.com](https://text-studio.metasapiens.com/)**
 
 ## 🚀 Features
 
