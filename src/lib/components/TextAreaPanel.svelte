@@ -800,7 +800,7 @@
     box-shadow: 0 10px 32px rgba(0, 0, 0, 0.1);
     text-align: center;
     color: var(--text-secondary);
-    z-index: 2;
+    z-index: 100;
   }
 
   .empty-state:focus-within {
@@ -865,7 +865,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    z-index: 3;
+    z-index: 20;
   }
 
   .examples-item {

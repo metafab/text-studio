@@ -1313,6 +1313,7 @@
     width: 100%;
     height: calc(100vh - 200px);
     min-height: 500px;
+    overflow: visible;
   }
 
   .textarea-grid.maximized-a .panel-b,
@@ -1343,6 +1344,7 @@
     position: absolute;
     border: 1px solid var(--border-color);
     box-sizing: border-box;
+    overflow: visible;
   }
 
   .panel-a {
