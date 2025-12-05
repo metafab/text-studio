@@ -7,6 +7,32 @@ export interface ExampleText {
 
 export const EXAMPLE_TEXTS: ExampleText[] = [
   {
+    id: 'alice-top-artists',
+    label: "Alice's top artists",
+    description: 'A mix of musical artists for comparison, cleaning, sorting and filtering.',
+    content: `The Beatles
+Dua Lipa
+Metallica
+Adele
+Shakira
+  David Bowie
+Daft Punk
+Ed Sheeran
+Téléphone`,
+  },
+  {
+    id: 'bob-top-artists',
+    label: "Bob's top artists",
+    description: 'Another mix of musical artists to use in combination with Alice\'s top artists.',
+    content: `Beyoncé
+Daft Punk
+The Weeknd
+Téléphone 
+Drake
+Queens of the Stone Age
+David Guetta`,
+  },
+  {
     id: 'lorem-variations',
     label: 'Lorem ipsum variations',
     description: 'Mixed-length lorem ipsum lines with occasional leading or trailing spaces.',
