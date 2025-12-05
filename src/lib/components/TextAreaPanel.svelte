@@ -219,9 +219,25 @@
     showExamples = false
   }
 
+  function handleExamplesKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape' && showExamples) {
+      event.preventDefault()
+      showExamples = false
+    }
+  }
+
   $effect(() => {
     if ((!isPanelEmpty || !shouldShowQuickActions) && showExamples) {
       showExamples = false
+    }
+  })
+
+  $effect(() => {
+    if (showExamples) {
+      document.addEventListener('keydown', handleExamplesKeydown)
+      return () => {
+        document.removeEventListener('keydown', handleExamplesKeydown)
+      }
     }
   })
 
