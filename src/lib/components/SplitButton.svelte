@@ -31,6 +31,7 @@
   let isOpen = $state(false)
   let buttonElement: HTMLButtonElement | undefined = undefined
   let dropdownElement = $state<HTMLDivElement | undefined>(undefined)
+  let dropdownPosition = $state({ top: 0, right: 0 })
 
   function handleMainClick(event: MouseEvent) {
     if (!disabled) {
@@ -48,7 +49,20 @@
     }
 
     isOpen = !isOpen
-    if (isOpen) await tick()
+    if (isOpen) {
+      await tick()
+      updateDropdownPosition()
+    }
+  }
+
+  function updateDropdownPosition() {
+    if (buttonElement) {
+      const rect = buttonElement.getBoundingClientRect()
+      dropdownPosition = {
+        top: rect.bottom + 4,
+        right: window.innerWidth - rect.right,
+      }
+    }
   }
 
   function handleCloseOtherDropdowns() {
@@ -78,10 +92,18 @@
   $effect(() => {
     if (isOpen) {
       window.addEventListener('mousedown', handleClickOutside)
+      window.addEventListener('scroll', updateDropdownPosition, true)
+      window.addEventListener('resize', updateDropdownPosition)
     } else {
       window.removeEventListener('mousedown', handleClickOutside)
+      window.removeEventListener('scroll', updateDropdownPosition, true)
+      window.removeEventListener('resize', updateDropdownPosition)
     }
-    return () => window.removeEventListener('mousedown', handleClickOutside)
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside)
+      window.removeEventListener('scroll', updateDropdownPosition, true)
+      window.removeEventListener('resize', updateDropdownPosition)
+    }
   })
 
   $effect(() => {
@@ -106,6 +128,7 @@
   </button>
   <button
     class="split-dropdown"
+    bind:this={buttonElement}
     onclick={toggleDropdown}
     {disabled}
     aria-label="Show more actions"
@@ -121,22 +144,27 @@
       />
     </svg>
   </button>
-  {#if isOpen}
-    <div class="dropdown-menu" bind:this={dropdownElement}>
-      {#each altActions as altAction}
-        <button
-          class="dropdown-item"
-          onclick={(e) => handleAltClick(altAction, e)}
-          {disabled}
-          aria-label={altAction.label}
-          title={altAction.tooltip || altAction.label}
-        >
-          {altAction.label}
-        </button>
-      {/each}
-    </div>
-  {/if}
 </div>
+
+{#if isOpen}
+  <div
+    class="dropdown-menu"
+    bind:this={dropdownElement}
+    style="position: fixed; top: {dropdownPosition.top}px; right: {dropdownPosition.right}px;"
+  >
+    {#each altActions as altAction}
+      <button
+        class="dropdown-item"
+        onclick={(e) => handleAltClick(altAction, e)}
+        {disabled}
+        aria-label={altAction.label}
+        title={altAction.tooltip || altAction.label}
+      >
+        {altAction.label}
+      </button>
+    {/each}
+  </div>
+{/if}
 
 <style>
   .split-button {
@@ -213,15 +241,13 @@
     overflow-wrap: break-word;
   }
   .dropdown-menu {
-    position: absolute;
-    top: 110%;
-    right: 0;
+    position: fixed;
     min-width: 170px;
     background: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: 6px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
-    z-index: 1000;
+    z-index: 9999;
     padding: 0.3em 0;
     animation: fadeIn 0.13s;
   }
