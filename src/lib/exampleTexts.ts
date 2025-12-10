@@ -18,7 +18,8 @@ Shakira
   David Bowie
 Daft Punk
 Ed Sheeran
-Téléphone`,
+Téléphone
+Queens of the Stone Age`,
   },
   {
     id: 'bob-top-artists',
@@ -29,7 +30,8 @@ Daft Punk
 The Weeknd
 Téléphone 
 Drake
-Queens of the Stone Age
+Daft Punk
+Queens of the stone age
 David Guetta`,
   },
   {
