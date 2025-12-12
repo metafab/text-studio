@@ -5,6 +5,8 @@ Process, compare, transform, and analyze text with an intuitive interface and po
 
 👉 **Use it now at [text-studio.metasapiens.com](https://text-studio.metasapiens.com/)**
 
+🎬 [Short introduction](./public/text-processing-studio-tool-introduction.mp4) (in French)
+
 ## 🚀 Features
 
 ### Text Processing Operations
