@@ -177,8 +177,8 @@
         <label
           class="radio-option"
           title="LIKE: SQL-style wildcards (% = any text, _ = single char)
-For line filtering: 'hel%' matches lines starting with 'hel', '%lo' matches lines ending with 'lo'
-Example: 'test%file' matches 'test-my-file'"
+Pattern anchoring: 'Apple%' matches lines starting with 'Apple', '%txt' matches lines ending with 'txt'
+Example: '%hello%' finds 'hello' anywhere"
         >
           <input
             type="radio"

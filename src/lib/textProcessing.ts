@@ -23,9 +23,9 @@ function likePatternToRegex(pattern: string, ignoreCase: boolean = false): RegEx
   let regexPattern = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&')
 
   // Convert LIKE wildcards to regex
-  // % matches any sequence of characters (including none) - use .*? for non-greedy
+  // % matches any sequence of characters (including none) - use .* for greedy
   // _ matches exactly one character
-  regexPattern = regexPattern.replace(/%/g, '.*?').replace(/_/g, '.')
+  regexPattern = regexPattern.replace(/%/g, '.*').replace(/_/g, '.')
 
   // Anchor to match full string
   regexPattern = `^${regexPattern}$`
@@ -44,23 +44,43 @@ function createStandardRegex(searchTerm: string, flags: string): RegExp {
 // Create regex for LIKE mode (SQL-style pattern matching)
 function createLikeRegex(searchTerm: string, flags: string): RegExp {
   // For highlighting and replacement with LIKE patterns:
-  // - If pattern doesn't start with %, match from word boundary or line start
-  // - If pattern doesn't end with %, match to word boundary or line end
-  // Escape everything except % and _
-  let likePattern = searchTerm.replace(/[.+?^${}()|[\]\\]/g, '\\$&')
-
-  // Check if pattern starts/ends with %
+  // - If pattern doesn't start with %, match from start of line
+  // - If pattern doesn't end with %, match to end of line
+  // - Patterns without % at all match the literal pattern anywhere
+  
+  // Check if pattern starts/ends with % BEFORE escaping
   const startsWithPercent = searchTerm.startsWith('%')
   const endsWithPercent = searchTerm.endsWith('%')
+  const hasPercent = searchTerm.includes('%')
 
-  // Replace % with \S* (non-whitespace) and _ with any character
-  likePattern = likePattern.replace(/%/g, '\\S*').replace(/_/g, '.')
+  // Remove leading/trailing % for processing
+  let corePattern = searchTerm
+  if (startsWithPercent) corePattern = corePattern.slice(1)
+  if (endsWithPercent) corePattern = corePattern.slice(0, -1)
 
-  // Add boundary constraints based on % presence
-  // If no % at start, pattern must match from start of word
-  likePattern = startsWithPercent ? `(${likePattern}` : `(?:^|\\s)(${likePattern}`
-  // If no % at end, pattern must match to end of word
-  likePattern = endsWithPercent ? `${likePattern})` : `${likePattern})(?=\\s|$)`
+  // Escape special regex characters except % and _
+  let likePattern = corePattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+
+  // Replace % with .* (greedy) and _ with any character
+  likePattern = likePattern.replace(/%/g, '.*').replace(/_/g, '.')
+
+  // Add boundary constraints and capture groups based on % presence
+  if (!hasPercent) {
+    // No % wildcard - match the pattern anywhere (like standard search but with _ support)
+    likePattern = `(${likePattern})`
+  } else if (startsWithPercent && endsWithPercent) {
+    // Pattern is %...%, match anywhere - use non-greedy prefix/suffix, capture the core
+    likePattern = `.*?(${likePattern}).*?`
+  } else if (startsWithPercent) {
+    // Pattern is %..., match ending (anchored at end of line) - use greedy .* to capture full line
+    likePattern = `(^.*${likePattern}$)`
+  } else if (endsWithPercent) {
+    // Pattern is ...%, match from start (anchored at start of line)
+    likePattern = `(^${likePattern}.*)`
+  } else {
+    // Has % in the middle (e.g., "a%b"), match the full line
+    likePattern = `(^${likePattern}$)`
+  }
 
   // Add multiline flag for ^ and $ to work with line boundaries
   if (!flags.includes('m')) {

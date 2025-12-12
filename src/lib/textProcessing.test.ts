@@ -206,32 +206,32 @@ describe('Text Processing Functions', () => {
     it('should highlight using LIKE pattern with % wildcard at end', () => {
       const text = 'hello world hello universe'
       const result = searchAndHighlight(text, 'hel%', false, 'like')
-      expect(result).toBe('<mark>hello</mark> world <mark>hello</mark> universe')
+      expect(result).toBe('<mark>hello world hello universe</mark>')
     })
 
     it('should highlight using LIKE pattern with % at start (suffix match)', () => {
       const text = 'hello world say hello'
       const result = searchAndHighlight(text, '%llo', false, 'like')
-      expect(result).toBe('<mark>hello</mark> world say <mark>hello</mark>')
+      expect(result).toBe('<mark>hello world say hello</mark>')
     })
 
     it('should highlight using LIKE pattern - start match only', () => {
       const text = 'hello world, 2 hello, hello'
       const result = searchAndHighlight(text, 'hel%', false, 'like')
-      // "hel%" matches words starting with "hel" (at line start or after whitespace)
-      // Matches: "hello" (at start), "hello," (after "2 "), "hello" (after comma+space)
-      expect(result).toBe('<mark>hello</mark> world, 2 <mark>hello,</mark> <mark>hello</mark>')
+      // "hel%" matches lines starting with "hel"
+      // The entire line starts with "hello", so the whole line is matched
+      expect(result).toBe('<mark>hello world, 2 hello, hello</mark>')
     })
 
     it('should highlight using LIKE pattern with _ wildcard', () => {
       const text = 'hello hallo hillo'
-      const result = searchAndHighlight(text, 'h_llo', false, 'like')
+      const result = searchAndHighlight(text, '%h_llo%', false, 'like')
       expect(result).toBe('<mark>hello</mark> <mark>hallo</mark> <mark>hillo</mark>')
     })
 
     it('should highlight using LIKE pattern case-insensitively', () => {
       const text = 'Hello HALLO hillo'
-      const result = searchAndHighlight(text, 'h_llo', true, 'like')
+      const result = searchAndHighlight(text, '%h_llo%', true, 'like')
       expect(result).toBe('<mark>Hello</mark> <mark>HALLO</mark> <mark>hillo</mark>')
     })
 
@@ -774,18 +774,18 @@ describe('Text Processing Functions', () => {
     it('should replace using LIKE pattern with %', () => {
       const text = 'hello world hello universe'
       const result = replaceText(text, 'hel%', 'greetings', false, 'like')
-      expect(result).toBe('greetings world greetings universe')
+      expect(result).toBe('greetings')
     })
 
     it('should replace using LIKE pattern with _', () => {
       const text = 'hello hallo hillo'
-      const result = replaceText(text, 'h_llo', 'hi', false, 'like')
+      const result = replaceText(text, '%h_llo%', 'hi', false, 'like')
       expect(result).toBe('hi hi hi')
     })
 
     it('should replace using LIKE pattern case-insensitively', () => {
       const text = 'Hello HALLO hillo'
-      const result = replaceText(text, 'h_llo', 'hi', true, 'like')
+      const result = replaceText(text, '%h_llo%', 'hi', true, 'like')
       expect(result).toBe('hi hi hi')
     })
 

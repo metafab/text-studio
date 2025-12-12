@@ -22,78 +22,113 @@ Result: Matches "$10" literally (parentheses, dots, etc. are treated as literal 
 
 ## LIKE Pattern Mode
 
-**Use case**: Flexible pattern matching with wildcards
+**Use case**: Flexible pattern matching with SQL-style wildcards
 
 ### Wildcards
 
-- `%` = matches any sequence of non-whitespace characters
+- `%` = matches any sequence of characters (including spaces)
 - `_` = matches exactly one character
 
-### Line Filtering Behavior (Keep/Remove Lines)
+### How LIKE Patterns Work
 
-When filtering lines, LIKE patterns work with **line boundaries**:
+LIKE patterns use **line boundaries** for matching. The position of `%` wildcards determines the anchoring:
 
-- Pattern without `%` at the start (e.g., `hel%`) matches lines that **START** with the literal part
-- Pattern without `%` at the end (e.g., `%lo`) matches lines that **END** with the literal part
+- **`pattern%`** (ends with %): Matches lines **starting with** the pattern (anchored at line start)
+- **`%pattern`** (starts with %): Matches lines **ending with** the pattern (anchored at line end)
+- **`%pattern%`** (both sides): Matches the pattern **anywhere** in the line (no anchoring, finds multiple occurrences)
+- **`pattern`** (no %): Matches the pattern **anywhere** in the line (no anchoring)
 
 **Example:**
 
 ```
 Lines: "hello", "hello 2", "3 hello"
-Pattern "hel%": Matches "hello" and "hello 2" (start with "hel")
-Pattern "%lo": Matches "hello" and "3 hello" (end with "lo")
-Pattern "%ello%": Matches all three lines (contains "ello")
+Pattern "hel%": Matches entire lines starting with "hel"
+  - "hello" ✓ (entire line)
+  - "hello 2" ✓ (entire line)
+  - "3 hello" ✗
+
+Pattern "%lo": Matches entire lines ending with "lo"
+  - "hello" ✓ (entire line)
+  - "3 hello" ✓ (entire line)
+  - "hello 2" ✗
+
+Pattern "%ello%": Matches "ello" anywhere (multiple occurrences)
+  - In "hello world hello": matches "hello" (twice)
 ```
 
-### Highlighting and Replacement Behavior
-
-When highlighting or replacing within text, LIKE patterns work with **word boundaries**:
-
-- Patterns match words at the start of text or after whitespace
-- Pattern matches until the end of the word (non-whitespace sequence)
-
-### Example 1: Prefix Match
+### Example 1: Line Start Match (pattern%)
 
 ```
-Text: "hello, hello123, helloworld, hi there"
-Pattern: "hello%"
-Matches: "hello", "hello123", "helloworld" (but not "hi")
+Text: "Apple pie
+Banana split
+Apple juice"
+
+Pattern: "Apple%"
+Result: Matches entire lines starting with "Apple":
+  - "Apple pie" ✓
+  - "Apple juice" ✓
+  - "Banana split" ✗
 ```
 
-### Example 2: Suffix Match
+### Example 2: Line End Match (%pattern)
 
 ```
-Text: "myfile.txt, yourfile.txt, readme.md"
-Pattern: "%.txt"
-Matches: "myfile.txt", "yourfile.txt" (but not "readme.md")
+Text: "hello world say hello
+test data
+goodbye hello"
+
+Pattern: "%hello"
+Result: Matches entire lines ending with "hello":
+  - "hello world say hello" ✓
+  - "goodbye hello" ✓
+  - "test data" ✗
 ```
 
-### Example 3: Middle Wildcard
+### Example 3: Match Anywhere (%pattern%)
 
 ```
-Text: "test-file-name, test_var_name, testfunction, my-test-value"
-Pattern: "test%name"
-Matches: "test-file-name", "test_var_name" (but not "testfunction" or "my-test-value")
+Text: "hello hallo hillo"
+Pattern: "%h_llo%"
+Result: Matches each occurrence:
+  - "hello" ✓
+  - "hallo" ✓
+  - "hillo" ✓
 ```
 
-### Example 4: Single Character Wildcard
+### Example 4: Match Anywhere (no %)
 
 ```
-Text: "cat, cot, cut, cart"
+Text: "cat cot cut cart"
 Pattern: "c_t"
-Matches: "cat", "cot", "cut" (but not "cart" - it has 4 letters)
+Result: Matches "cat", "cot", "cut" (but not "cart" - it has 4 letters)
 ```
 
-### Example 5: Combined Wildcards
+### Example 5: File Extensions
 
 ```
-Text: "hello, hallo, hillo, hollo"
-Pattern: "h_llo"
-Matches: "hello", "hallo", "hillo", "hollo"
+Text: "myfile.txt
+yourfile.txt
+readme.md"
 
-Text: "test1, test12, test123"
-Pattern: "test%"
-Matches: "test1", "test12", "test123"
+Pattern: "%.txt"
+Result: Matches lines ending with ".txt":
+  - "myfile.txt" ✓
+  - "yourfile.txt" ✓
+  - "readme.md" ✗
+```
+
+### Example 6: Combined Wildcards
+
+```
+Text: "test-file-name.txt
+test-config.xml
+production-file.txt"
+
+Pattern: "test%txt"
+Result: Matches lines starting with "test" and ending with "txt":
+  - "test-file-name.txt" ✓
+  - "test-config.xml" ✗
+  - "production-file.txt" ✗
 ```
 
 ## Regex Mode
@@ -194,7 +229,8 @@ Matches: "100", "20" (numbers after $ sign)
 | Feature               | Standard        | LIKE             | Regex             |
 | --------------------- | --------------- | ---------------- | ----------------- |
 | Exact text matching   | ✅              | ❌               | ✅                |
-| Wildcard patterns     | ❌              | ✅               | ✅                |
+| Wildcard patterns     | ❌              | ✅ (% and _)     | ✅                |
+| Line boundary control | ❌              | ✅ (via %)       | ✅ (^ and $)      |
 | Special char escaping | Auto            | % and _ only     | Manual            |
 | Capture groups        | ❌              | ❌               | ✅                |
 | Learning curve        | Easy            | Medium           | Hard              |
@@ -213,8 +249,8 @@ Matches: "100", "20" (numbers after $ sign)
 
 - Need wildcards but not full regex
 - SQL-style patterns are familiar
-- Matching filenames or identifiers
-- Prefix/suffix matching
+- Matching lines with specific prefixes or suffixes
+- Finding patterns that start or end lines
 
 ### When to Use Regex Mode
 
@@ -249,8 +285,10 @@ mytest-value.txt
 production-file.txt
 
 Pattern: "test%txt"
-Keep Lines: "test-file-name.txt", "mytest-value.txt"
-Remove Lines: "test-config.xml", "production-file.txt"
+Keep Lines: "test-file-name.txt"
+Remove Lines: "test-config.xml", "mytest-value.txt", "production-file.txt"
+
+Note: Pattern matches lines starting with "test" AND ending with "txt"
 ```
 
 ### Regex Mode - Filter
@@ -281,10 +319,17 @@ Result: "hi world, hi universe"
 ### LIKE Mode - Replace
 
 ```
-Text: "test123 and test456"
-Pattern: "test%"
-Replace: "item"
-Result: "item and item"
+Text: "Apple pie
+Banana split
+Apple juice"
+
+Pattern: "Apple%"
+Replace: "Orange"
+Result: "Orange
+Banana split
+Orange"
+
+Note: Replaces entire lines starting with "Apple"
 ```
 
 ### Regex Mode - Replace with Capture Groups

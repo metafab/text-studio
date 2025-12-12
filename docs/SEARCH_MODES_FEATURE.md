@@ -18,15 +18,19 @@ Added three search mode options to the Text Processing Studio application, provi
 ### 2. LIKE Pattern
 
 - **Description**: SQL-style pattern matching with wildcards
-- **Use Case**: Flexible pattern matching without regex complexity
+- **Use Case**: Flexible pattern matching with line boundary control
 - **Wildcards**:
-  - `%` - Matches any sequence of non-whitespace characters (zero or more)
+  - `%` - Matches any sequence of characters (including spaces)
   - `_` - Matches exactly one character
+- **Line Boundary Behavior**:
+  - `pattern%` - Matches lines starting with pattern
+  - `%pattern` - Matches lines ending with pattern
+  - `%pattern%` - Matches pattern anywhere (multiple occurrences)
 - **Examples**:
-  - `hello%` matches "hello", "hello123", "helloworld"
-  - `%world` matches "world", "myworld", "123world"
-  - `h_llo` matches "hello", "hallo", "hillo"
-  - `test%file` matches "test-my-file", "test_config_file"
+  - `Apple%` matches lines starting with "Apple" (e.g., "Apple pie", "Apple juice")
+  - `%.txt` matches lines ending with ".txt" (e.g., "file.txt", "data.txt")
+  - `%h_llo%` matches "hello", "hallo", "hillo" anywhere in text
+  - `test%file` matches lines starting with "test" and ending with "file"
 
 ### 3. Regex
 
@@ -107,10 +111,14 @@ All search-related operations now support the three modes:
 
 #### LIKE Pattern Matching
 
-- For line filtering: Full-line match with anchors (^...$)
-- For highlighting/replacement: Within-line matching
-- Uses `\\S*` for `%` to match non-whitespace sequences
-- Preserves word boundaries while matching patterns
+- Pattern anchoring based on `%` position:
+  - `pattern%` - Anchored at line start (`^pattern.*`)
+  - `%pattern` - Anchored at line end (`^.*pattern$`)
+  - `%pattern%` - No anchoring, matches anywhere with non-greedy matching
+  - `pattern` (no %) - Matches anywhere, no anchoring
+- Uses `.*` (greedy) for line-anchored patterns
+- Uses `.*?` (non-greedy) for `%pattern%` to find multiple occurrences
+- Multiline mode enabled for `^` and `$` to work at line boundaries
 
 #### Error Handling
 
@@ -125,7 +133,7 @@ All search-related operations now support the three modes:
 Each mode displays a contextual hint:
 
 - **Standard**: "💡 Searches for exact text matches"
-- **LIKE Pattern**: "💡 Use % for any text, _ for single character"
+- **LIKE Pattern**: "💡 Use % for any text, _ for single char. Line filtering: hel% = starts with 'hel', %lo = ends with 'lo'"
 - **Regex**: "💡 Enter a JavaScript regular expression pattern"
 
 ### Tooltips

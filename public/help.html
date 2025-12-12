@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -169,7 +169,7 @@
         background: var(--code-bg);
         padding: 2px 6px;
         border-radius: 4px;
-        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
         font-size: 0.9em;
         color: var(--code-color);
       }
@@ -206,7 +206,8 @@
         margin: 24px 0;
       }
 
-      td, th {
+      td,
+      th {
         padding: 12px;
         border: 1px solid var(--border-color);
         text-align: left;
@@ -280,26 +281,31 @@
           <ul class="nav-list">
             <li>
               <a href="#overview" class="nav-item active" onclick="showSection('overview', event)"
-              >Overview</a>
+                >Overview</a
+              >
             </li>
             <li>
               <a href="#search-modes" class="nav-item" onclick="showSection('search-modes', event)"
-              >Search Modes</a>
+                >Search Modes</a
+              >
             </li>
             <li>
               <a href="#substring" class="nav-item" onclick="showSection('substring', event)"
-              >Substring Extraction</a>
+                >Substring Extraction</a
+              >
             </li>
             <li>
               <a href="#usage" class="nav-item" onclick="showSection('usage', event)">How to Use</a>
             </li>
             <li>
               <a href="#testing" class="nav-item" onclick="showSection('testing', event)"
-              >Testing</a>
+                >Testing</a
+              >
             </li>
             <li>
               <a href="#technology" class="nav-item" onclick="showSection('technology', event)"
-              >Technology</a>
+                >Technology</a
+              >
             </li>
           </ul>
         </nav>
@@ -432,35 +438,54 @@
 Search: "hello"
 Result: Matches "hello" exactly (2 matches)</code></pre>
 
-          <hr>
+          <hr />
 
           <h2>LIKE Pattern Mode</h2>
-          <p><strong>Use case:</strong> Flexible pattern matching with wildcards</p>
+          <p><strong>Use case:</strong> Flexible pattern matching with SQL-style wildcards</p>
 
           <h3>Wildcards:</h3>
           <ul>
-            <li><code>%</code> = matches any sequence of non-whitespace characters</li>
+            <li><code>%</code> = matches any sequence of characters (including spaces)</li>
             <li><code>_</code> = matches exactly one character</li>
+          </ul>
+
+          <h3>How LIKE Patterns Work:</h3>
+          <p>
+            LIKE patterns use <strong>line boundaries</strong>. The position of
+            <code>%</code> determines anchoring:
+          </p>
+          <ul>
+            <li><code>pattern%</code> - Matches lines <strong>starting with</strong> pattern</li>
+            <li><code>%pattern</code> - Matches lines <strong>ending with</strong> pattern</li>
+            <li>
+              <code>%pattern%</code> - Matches pattern <strong>anywhere</strong> (multiple
+              occurrences)
+            </li>
+            <li><code>pattern</code> - Matches pattern <strong>anywhere</strong></li>
           </ul>
 
           <h3>Examples:</h3>
 
-          <p><strong>Prefix Match:</strong></p>
-          <pre><code>Text: "hello, hello123, helloworld"
-Pattern: "hello%"
-Matches: "hello", "hello123", "helloworld"</code></pre>
+          <p><strong>Line Start Match:</strong></p>
+          <pre><code>Text: "Apple pie\nBanana split\nApple juice"
+Pattern: "Apple%"
+Matches: Lines starting with "Apple"
+  - "Apple pie" ✓
+  - "Apple juice" ✓</code></pre>
 
-          <p><strong>Suffix Match:</strong></p>
-          <pre><code>Text: "myfile.txt, yourfile.txt, readme.md"
+          <p><strong>Line End Match:</strong></p>
+          <pre><code>Text: "myfile.txt\nyourfile.txt\nreadme.md"
 Pattern: "%.txt"
-Matches: "myfile.txt", "yourfile.txt"</code></pre>
+Matches: Lines ending with ".txt"
+  - "myfile.txt" ✓
+  - "yourfile.txt" ✓</code></pre>
 
           <p><strong>Single Character Wildcard:</strong></p>
-          <pre><code>Text: "cat, cot, cut, cart"
-Pattern: "c_t"
+          <pre><code>Text: "cat cot cut cart"
+Pattern: "%c_t%"
 Matches: "cat", "cot", "cut" (but not "cart")</code></pre>
 
-          <hr>
+          <hr />
 
           <h2>Regex Mode</h2>
           <p><strong>Use case:</strong> Advanced pattern matching with full regex power</p>
@@ -497,7 +522,7 @@ Pattern: "(\\w+) (\\w+)"
 Replacement: "$2, $1"
 Result: "Smith, John, Doe, Jane"</code></pre>
 
-          <hr>
+          <hr />
 
           <h2>Comparison Table</h2>
           <table>
@@ -576,7 +601,7 @@ test string</code></pre>
 apple
 test </code></pre>
 
-          <hr>
+          <hr />
 
           <h2>Negative Start Index</h2>
           <p>Negative indices count from the end of each line:</p>
@@ -596,7 +621,7 @@ test string</code></pre>
 anana
 tring</code></pre>
 
-          <hr>
+          <hr />
 
           <h2>Use Cases</h2>
           <ol>
@@ -633,11 +658,14 @@ tring</code></pre>
           <h3>3. View Results</h3>
           <ul>
             <li>
-              Processed text appears in the <strong>active panel</strong> or <strong>Result
-                panel</strong>
+              Processed text appears in the <strong>active panel</strong> or
+              <strong>Result panel</strong>
             </li>
             <li>Use <strong>Shift+Click</strong> on command buttons to output to Result panel</li>
-            <li>Use <strong>Alt+Click</strong> or <strong>Option+Click</strong> to output to the active panel</li>
+            <li>
+              Use <strong>Alt+Click</strong> or <strong>Option+Click</strong> to output to the
+              active panel
+            </li>
           </ul>
 
           <h2>Command Palette</h2>
@@ -651,11 +679,16 @@ tring</code></pre>
           </p>
           <ul>
             <li><strong>Shift+Enter</strong> sends the command output to the Result pane</li>
-            <li><strong>Alt+Enter</strong> or <strong>Option+Enter</strong> routes the output to the opposite pane</li>
-            <li>Close the palette any time with <strong>Esc</strong> or by clicking the backdrop</li>
+            <li>
+              <strong>Alt+Enter</strong> or <strong>Option+Enter</strong> routes the output to the
+              opposite pane
+            </li>
+            <li>
+              Close the palette any time with <strong>Esc</strong> or by clicking the backdrop
+            </li>
           </ul>
 
-          <hr>
+          <hr />
 
           <h2>Text Comparison</h2>
 
@@ -678,7 +711,7 @@ tring</code></pre>
             <li><strong>Highlight Different</strong> - Show non-matching lines</li>
           </ul>
 
-          <hr>
+          <hr />
 
           <h2>Keyboard Shortcuts</h2>
 
@@ -696,18 +729,24 @@ tring</code></pre>
           <h3>Output Destination</h3>
           <ul>
             <li><strong>Shift+Click</strong> on command button - Output to Result panel</li>
-            <li><strong>Alt+Click</strong> or <strong>Option+Click</strong> on command button - Output to active panel</li>
+            <li>
+              <strong>Alt+Click</strong> or <strong>Option+Click</strong> on command button - Output
+              to active panel
+            </li>
             <li><strong>Normal Click</strong> - Use default output setting</li>
           </ul>
 
           <h3>Command Palette</h3>
           <ul>
             <li>
-              <strong>Cmd+K</strong> (Mac) or <strong>Ctrl+K</strong> (Windows/Linux) - Open or close
-              the palette
+              <strong>Cmd+K</strong> (Mac) or <strong>Ctrl+K</strong> (Windows/Linux) - Open or
+              close the palette
             </li>
             <li><strong>Arrow Keys / Tab</strong> - Navigate between command results</li>
-            <li><strong>Enter</strong> - Run selected command (combine with Shift or Alt/Option for output routing)</li>
+            <li>
+              <strong>Enter</strong> - Run selected command (combine with Shift or Alt/Option for
+              output routing)
+            </li>
           </ul>
         </div>
 
@@ -822,7 +861,7 @@ pnpm test:ui</code></pre>
         }
 
         // Hide all sections
-        document.querySelectorAll('.section').forEach(section => {
+        document.querySelectorAll('.section').forEach((section) => {
           section.classList.remove('active')
         })
 
@@ -835,7 +874,7 @@ pnpm test:ui</code></pre>
         }
 
         // Update active nav item
-        document.querySelectorAll('.nav-item').forEach(item => {
+        document.querySelectorAll('.nav-item').forEach((item) => {
           item.classList.remove('active')
         })
         const activeLink = document.querySelector(`a[href="#${sectionId}"]`)
